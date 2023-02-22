@@ -1,0 +1,5 @@
+python39-devel [platform:rpm compile]
+libcurl-devel [platform:rpm compile]
+subversion [platform:rpm]
+subversion [platform:dpkg]
+git-lfs [platform:rpm]

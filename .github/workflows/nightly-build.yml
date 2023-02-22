@@ -1,0 +1,41 @@
+name: Build nightly AWX EE image
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+
+jobs:
+  build-ee-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: develop
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install ansible-builder
+        run: pip3 install ansible-builder
+
+      - name: Login to image repository
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build EE image
+        run: |
+          ansible-builder build \
+          --tag ghcr.io/thedatabaseme/awx-ee:nightly \
+          --container-runtime docker \
+          -f execution-environment.yml \
+          -v 3
+
+      - name: Push EE image
+        run: |
+          docker push ghcr.io/thedatabaseme/awx-ee:nightly
