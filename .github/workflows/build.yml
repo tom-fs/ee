@@ -19,7 +19,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/thedatabaseme/awx-ee
+          images: ghcr.io/tom-fs/ee
           flavor: latest=false
           tags: |
             type=ref,event=branch
@@ -45,7 +45,7 @@ jobs:
       - name: Build EE image
         run: |
           ansible-builder build \
-          --tag ghcr.io/thedatabaseme/awx-ee:latest \
+          --tag ghcr.io/tom-fs/ee:latest \
           --tag ${{ steps.meta.outputs.tags }} \
           --container-runtime docker \
           -f execution-environment.yml
@@ -53,7 +53,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.7.1
         with:
-          image-ref: 'ghcr.io/thedatabaseme/awx-ee:latest'
+          image-ref: 'ghcr.io/tom-fs/ee:latest'
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
@@ -63,4 +63,4 @@ jobs:
       - name: Push EE image
         if: github.ref_type == 'tag'
         run: |
-          docker push ghcr.io/thedatabaseme/awx-ee -a
+          docker push ghcr.io/tom-fs/ee -a
