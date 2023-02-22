@@ -1,4 +1,4 @@
-# AWX EE 
+# AWX EE
 
 This repository contains building instructions for a self-build AWX execution environment.
 To find detailed instructions and information about why to use your own build EE might
